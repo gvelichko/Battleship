@@ -9,6 +9,9 @@
 #include<SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics.hpp>
 
+using std::vector;
+using std::string;
+
 struct position {
 	int start_x;
 	int start_y;
@@ -69,7 +72,7 @@ private:
 
 
 public:
-	Ship(int len, sf::Texture& text, position p, int rotation = 0) : _len(len), _len_l(len), _rotate(rotation), _rotate_l(rotation) { _sprite.setTexture(text); _sprite.setOrigin(sf::Vector2f(25, 25)); _pos.start_x = p.start_x; _pos.start_y = p.start_y; _sprite.setRotation(90 * rotation); changePos(p); };
+	Ship(int len, sf::Texture& text, position p, int rotation = 0) : _len(len), _len_l(len), _rotate(rotation), _rotate_l(rotation) { _sprite.setTexture(text); _sprite.setOrigin(sf::Vector2f(25, 25)); _pos.start_x = p.start_x; _pos.start_y = p.start_y; _sprite.setRotation(90 * rotation); changePos(p); }
 
 	void changeRotation() {
 		++_rotate_l;
@@ -139,9 +142,9 @@ public:
 
 class Field {
 protected:
-	std::vector<std::vector<int>> _field = std::vector<std::vector<int>>(10, std::vector<int>(10, 100));
-	std::vector<Ship> _ships;
-	std::vector<sf::Texture> _texts;
+	vector<vector<int>> _field = vector<vector<int>>(10, vector<int>(10, 100));
+	vector<Ship> _ships;
+	vector<sf::Texture> _texts;
 	int _count_of_destroyed = 0;
 public:
 	Field() {
@@ -158,9 +161,9 @@ public:
 
 	int setHit(int r, int c) {
 		//1 - 10 - номера кораблей
-	//100 - пустая клетка
-	//101 - попал в пустую
-	//<0 - попал в корабль
+		//100 - пустая клетка
+		//101 - попал в пустую
+		//<0 - попал в корабль
 		if (_field[r][c] == 101) {
 			return -1;
 		}
@@ -181,7 +184,15 @@ public:
 		}
 	}
 
+	int getShip(position p) {
+		for (int i = 0; i < 10; ++i) {
+			return 0;
+		}
+	}
 
+	Ship& getShip(int i) {
+		return _ships[i];
+	}
 };
 
 class PlayerField : public Field {
@@ -203,9 +214,23 @@ public:
 	}
 
 	void deleteOldPlace(int shipNum, position newPos) {
-		//?
+		if (_ships[shipNum].getPos().start_y != -4) {
+			for (int i = 0; i < _ships[shipNum].getLen(); ++i) {
+				if (_ships[shipNum].getRotate() % 2 == 0) {
+					_field[_ships[shipNum].getPos().start_y][_ships[shipNum].getPos().start_x + i * (1 - 2 * (_ships[shipNum].getRotate() % 4 == 2))] = 100;
+				}
+				else {
+					_field[_ships[shipNum].getPos().start_y + i * (1 - 2 * (_ships[shipNum].getRotate() % 4 == 3))][_ships[shipNum].getPos().start_x] = 100;
+				}
+			}
+		}
+		else {
+			--_unused_ships;
+		}
 	}
 };
+
+
 
 sf::RenderWindow window(sf::VideoMode(1250, 900), "Ship Fight");
 sf::Vector2i pixelPos = sf::Mouse::getPosition(window);//забираем коорд курсора
@@ -215,6 +240,7 @@ bool isMove = false;
 int isMoveNum = 0;
 bool isPlayerStep = true;
 sf::Font main_font;
+PlayerField my;
 sf::Texture re_text;
 sf::Sprite re_sprite;
 
@@ -270,12 +296,23 @@ position getCellMouseOn() {
 }
 
 
+void drawShips(PlayerField& field) {
+	for (int i = 0; i < 10; ++i) {
+		window.draw(field.getShip(i).getSprite());
+	}
+}
+
 void displayAl() {
 	window.clear(sf::Color::White);
+	drawShips(my);
 	drawFieldLines();
 	window.display();
 }
+
 int main() {
+	
+
+	main_font.loadFromFile("./Fonts/PionerSans-Bold.ttf");
 	while (window.isOpen()) {
 		displayAl();
 	}
