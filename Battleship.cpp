@@ -5,7 +5,6 @@
 #include<time.h>
 #include<SFML/Graphics/Texture.hpp>
 #include<SFML/Graphics/Sprite.hpp>
-#include<SFML/Graphics/Texture.hpp>
 #include<SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics.hpp>
 
@@ -129,7 +128,6 @@ public:
 		}
 		return newPos;
 	}
-
 	int getLenLocal() {
 		return _len_l;
 	}
@@ -193,6 +191,77 @@ public:
 	Ship& getShip(int i) {
 		return _ships[i];
 	}
+
+	bool isColide(int shipNum, position newPos, bool point_out = false)
+	{
+		int rotation_local = int(_ships[shipNum].getSprite().getRotation() / 90);
+		position vector_ship(0, 0);
+		position vector_border_ship(0, 0);
+		if (rotation_local % 4 == 0) {
+			vector_ship.start_x = 1;
+			vector_border_ship.start_y = 1;
+		}
+		else if (rotation_local % 4 == 1)
+		{
+			vector_ship.start_y = 1;
+			vector_border_ship.start_x = 1;
+
+		}
+		else if (rotation_local % 4 == 2)
+		{
+			vector_ship.start_x = -1;
+			vector_border_ship.start_y = 1;
+		}
+		else {
+			vector_ship.start_y = -1;
+			vector_border_ship.start_x = 1;
+
+		}
+
+		position nextCell = newPos;
+		position threeCell;
+		nextCell += vector_ship * (-1);
+		for (int i = 0; i <= _ships[shipNum].getLenLocal() + 1; ++i) {
+
+			threeCell = nextCell + (vector_border_ship * (-1));
+			for (int j = 0; j < 3; ++j) {
+				if (threeCell.start_x >= 0 && threeCell.start_x < 10 && \
+					threeCell.start_y >= 0 && threeCell.start_y < 10) {
+					if (!(_field[threeCell.start_y][threeCell.start_x] == shipNum + 1 || \
+						_field[threeCell.start_y][threeCell.start_x] == 100) && !point_out)
+					{
+						return false;
+					}
+					else if (point_out && _field[threeCell.start_y][threeCell.start_x] == 100) {
+						_field[threeCell.start_y][threeCell.start_x] = 101;
+					}
+				}
+				else if (!point_out && j == 1 && i != 0 && i != _ships[shipNum].getLen() + 1) {
+					return false;
+
+				}
+				threeCell += vector_border_ship;
+
+			}
+			nextCell += vector_ship;
+		}
+		return true;
+	}
+	void setNew(int shipNum, position newPos) {
+		for (int i = 0; i < _ships[shipNum].getLen(); ++i) {
+			if ((int(_ships[shipNum].getSprite().getRotation() / 90) % 2) == 0) {
+				_field[newPos.start_y][newPos.start_x + i * (1 - 2 * (int(_ships[shipNum].getSprite().getRotation() / 90) % 4 == 2))] = shipNum + 1;
+
+			}
+			else {
+				_field[newPos.start_y + i * (1 - 2 * (int(_ships[shipNum].getSprite().getRotation() / 90) % 4 == 3))][newPos.start_x] = shipNum + 1;
+			}
+		}
+	}
+	bool isAllDestroyed()
+	{
+		return _count_of_destroyed == 10;
+	}
 };
 
 class PlayerField : public Field {
@@ -230,9 +299,113 @@ public:
 	}
 };
 
+class EnemyField : public Field {
+private:
+	vector<int> _usedShipsNums;
+	int _rot = 0;
+	bool _hited_search = false;
+	position _heated_pos;
+	bool _vec_founded = false;
+	int _len_counter = 0;
+public:
+	EnemyField()
+	{
+		srand((unsigned)time(NULL));
+
+		for (int i = 1; i <= 4; ++i) {
+			for (int j = 1; j <= 4 - i + 1; ++j) {
+				_ships.push_back(Ship(i, _texts[i - 1], position(0, 0)));
+			}
+		}
+
+		for (int i = 0; i < 10; ++i) {
+			bool c = false;
+			while (!c) {
+				int y = rand() % 10;
+				int x = rand() % 10;
+				int r = rand() % 4;
+				for (int j = 0; j <= r; ++j) {
+					_ships[i].changeRotation();
+				}
+				c = isColide(i, position(x, y));
+				if (c) {
+					setNew(i, position(x, y));
+					_ships[i].setPosition(position(x, y), true);
+				}
+			}
+		}
+	}
+
+	const vector<int>& getUsedShips() {
+		return _usedShipsNums;
+	}
+
+	void addDefeatedShip(int i){
+		_usedShipsNums.push_back(i);
+	}
+
+	void addRot(){
+		++_rot;
+		_len_counter = 1;
+	}
+
+	void clearRot(){
+		_rot = 0;
+		_len_counter = 0;
+	}
+
+	int EnemyFieldgetRot(){
+		return _rot;
+	}
+
+	bool isSearch(){
+		return _hited_search;
+	}
+
+	void swapSearch(bool h){
+		_len_counter = 0;
+		_hited_search = h;
+	}
+
+	const position getVecPos()
+	{
+		if (_rot % 4 == 0) {
+			return position(_len_counter, 0);
+		}
+		else if (_rot % 4 == 1)
+		{
+			return position(0, _len_counter);
+		}
+		else if (_rot % 4 == 2)
+		{
+			return position(-_len_counter, 0);
+		}
+		else {
+			return position(0, -_len_counter);
+		}
+	}
+
+	bool isVecFounded(){
+		return _vec_founded;
+	}
+
+	void add_len(){
+		++_len_counter;
+	}
+
+	const position& getHitPos(){
+		return _heated_pos;
+	}
+
+	void setHitPos(const position& p){
+		_heated_pos.start_x = p.start_x;
+		_heated_pos.start_y = p.start_y;
+	}
+};
 
 
-sf::RenderWindow window(sf::VideoMode(1250, 900), "Ship Fight");
+
+sf::RenderWindow window(sf::VideoMode(1250, 900), "Battleship");
 sf::Vector2i pixelPos = sf::Mouse::getPosition(window);//забираем коорд курсора
 sf::Vector2f pos = window.mapPixelToCoords(pixelPos);//переводим их в игровые (уходим от коорд окна)
 
@@ -241,6 +414,7 @@ int isMoveNum = 0;
 bool isPlayerStep = true;
 sf::Font main_font;
 PlayerField my;
+EnemyField enemy;
 sf::Texture re_text;
 sf::Sprite re_sprite;
 
@@ -295,6 +469,57 @@ position getCellMouseOn() {
 	return position(int((pos.x - 50) / 50), int((pos.y - 200) / 50));
 }
 
+position getCellMouseOnEnemy() {
+	return position(int((pos.x - 700) / 50), int((pos.y - 200) / 50));
+}
+
+void shipSettelmentMouseDown(const sf::Event& e, PlayerField& my) {
+
+	if (e.key.code == sf::Mouse::Left) {
+		position cur_ship = getCellMouseOn();
+		if (cur_ship.start_y == -3) {
+			if (cur_ship.start_x >= 0 && cur_ship.start_x <= 3) {
+				isMoveNum = cur_ship.start_x;
+				if (my.getShip(isMoveNum).getSprite().getGlobalBounds().contains(pos.x, pos.y)) {
+					isMove = true;
+				}
+			}
+			else if (cur_ship.start_x >= 4 && cur_ship.start_x <= 10) {
+				isMoveNum = (cur_ship.start_x - 4) / 2 + 4;
+				if (my.getShip(isMoveNum).getSprite().getGlobalBounds().contains(pos.x, pos.y)) {
+					isMove = true;
+				}
+			}
+			else if (cur_ship.start_x >= 10 && cur_ship.start_x <= 15) {
+				isMoveNum = (cur_ship.start_x - 10) / 3 + 7;
+				if (my.getShip(isMoveNum).getSprite().getGlobalBounds().contains(pos.x, pos.y)) {
+					isMove = true;
+				}
+			}
+			else if (cur_ship.start_x >= 16 && cur_ship.start_x <= 19) {
+				isMoveNum = 9;
+				if (my.getShip(isMoveNum).getSprite().getGlobalBounds().contains(pos.x, pos.y)) {
+					isMove = true;
+				}
+			}
+		}
+		else if (cur_ship.start_x >= 0 && cur_ship.start_x < 10 && \
+			cur_ship.start_y >= 0 && cur_ship.start_y < 10)
+		{
+			if (my.getState(cur_ship.start_y, cur_ship.start_x) >= 1 && my.getState(cur_ship.start_y, cur_ship.start_x) <= 10) {
+				isMoveNum = my.getState(cur_ship.start_y, cur_ship.start_x) - 1;
+				if (my.getShip(isMoveNum).getSprite().getGlobalBounds().contains(pos.x, pos.y)) {
+					isMove = true;
+				}
+			}
+		}
+	}
+
+	if (e.key.code == sf::Mouse::Right && isMove) {
+		getCellMouseOn();
+		my.getShip(isMoveNum).changeRotation();
+	}
+}
 
 void drawShips(PlayerField& field) {
 	for (int i = 0; i < 10; ++i) {
@@ -302,18 +527,141 @@ void drawShips(PlayerField& field) {
 	}
 }
 
+void shipSettelmentMouseUp(const sf::Event& e, PlayerField& my) {
+	if (e.key.code == sf::Mouse::Left) {
+		if (isMove) {
+			isMove = false;
+			if (my.isColide(isMoveNum, getCellMouseOn())) {
+				my.deleteOldPlace(isMoveNum, getCellMouseOn());
+				my.setNew(isMoveNum, getCellMouseOn());
+				my.getShip(isMoveNum).setPosition(getCellMouseOn(), true);
+			}
+			else {
+				my.getShip(isMoveNum).setPosition(getCellMouseOn(), false);
+			}
+
+			std::cout << 1;
+		}
+	}
+}
+
+void drawFieldEnemy(EnemyField& field) {
+	//position p = getCellMouseOnEnemy();
+	sf::RectangleShape line(sf::Vector2f(64, 2.6f));
+	line.setOrigin(sf::Vector2f(32, 0));
+	line.setFillColor(sf::Color::Black);
+	for (int r = 0; r < 10; ++r) {
+		for (int c = 0; c < 10; ++c) {
+			if (field.getState(r, c) < 0) {
+
+				line.setRotation(45);
+
+				line.setPosition(50 * c + 725, 50 * r + 225);
+
+				window.draw(line);
+
+				line.setRotation(-45);
+
+				window.draw(line);
+
+			}
+			else if (field.getState(r, c) == 101) {
+				sf::CircleShape cs(3);
+				cs.setPosition(sf::Vector2f(50 * c + 700 + 22, 50 * r + 200 + 22));
+				cs.setFillColor(sf::Color::Black);
+				window.draw(cs);
+			}
+		}
+	}
+}
+
+void drawFieldPlayer(PlayerField& field) {
+	//position p = getCellMouseOnEnemy();
+	sf::RectangleShape line(sf::Vector2f(64, 2.6f));
+	line.setOrigin(sf::Vector2f(32, 0));
+	line.setFillColor(sf::Color::Black);
+
+	for (int r = 0; r < 10; ++r) {
+		for (int c = 0; c < 10; ++c) {
+			if (field.getState(r, c) < 0) {
+				line.setRotation(45);
+
+				line.setPosition(50 * c + 75, 50 * r + 225);
+
+				window.draw(line);
+
+				line.setRotation(-45);
+
+				window.draw(line);
+			}
+			else if (field.getState(r, c) == 101) {
+				sf::CircleShape cs(3);
+				cs.setPosition(sf::Vector2f(50 * c + 50 + 22, 50 * r + 200 + 22));
+				cs.setFillColor(sf::Color::Black);
+				window.draw(cs);
+			}
+		}
+	}
+}
+
 void displayAl() {
 	window.clear(sf::Color::White);
+
 	drawShips(my);
+	drawFieldEnemy(enemy);
+	drawFieldPlayer(my);
 	drawFieldLines();
+	if (my.isAllDestroyed() || enemy.isAllDestroyed()) {
+		window.draw(re_sprite);
+
+	}
 	window.display();
 }
 
+void startGame() {
+	my = PlayerField();
+	enemy = EnemyField();
+	isMove = false;
+	isMoveNum = 0;
+	isPlayerStep = true;
+}
+
 int main() {
-	
 
 	main_font.loadFromFile("./Fonts/PionerSans-Bold.ttf");
-	while (window.isOpen()) {
+	while (window.isOpen())
+	{
+
+		pixelPos = sf::Mouse::getPosition(window);//забираем коорд курсора
+		pos = window.mapPixelToCoords(pixelPos);//переводим их в игровые (уходим от коорд окна)
+		sf::Event event;
+		while (window.pollEvent(event))
+		{
+			if (isPlayerStep) {
+				if (event.type == sf::Event::MouseButtonPressed)
+				{
+					if (!my.isAllUser()) {
+						shipSettelmentMouseDown(event, my);
+					}
+					else {
+					}
+				}
+				if (event.type == sf::Event::MouseButtonReleased)
+				{
+					if (!my.isAllUser()) {
+						shipSettelmentMouseUp(event, my);
+					}
+				}
+			}
+
+		}
+
+
+
+		if (isMove) {
+			my.getShip(isMoveNum).changePos(getCellMouseOn());
+		}
+
 		displayAl();
 	}
 	return 0;
