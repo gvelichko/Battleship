@@ -618,6 +618,81 @@ void displayAl() {
 	window.display();
 }
 
+void enemyAtack(PlayerField& pl_field, EnemyField& e_f) {
+	int ret_res = 222;
+	int pos_x = 0;
+	int pos_y = 0;
+
+	sf::Clock clock;
+	float time_to_step = 2000;
+
+	while (true)
+	{
+		float time = clock.getElapsedTime().asMicroseconds();
+
+		clock.restart();
+		time = time / 800;
+		time_to_step += time;
+		if (time_to_step >= 1000) {//replace to 1000
+			//попал в уже попавшую
+			if (ret_res <= 0 || (e_f.isSearch() && (ret_res < 1 || ret_res == 222))) {
+				if (e_f.isSearch()) {
+					e_f.addRot();
+				}
+				else {
+					pos_x = rand() % 10;
+					pos_y = rand() % 10;
+				}
+				if (ret_res == 0)
+				{
+					isPlayerStep = true;
+					return;
+				}
+			}
+			//убил корабль
+			else if (ret_res == 2)
+			{
+				if (abs(pl_field.getState(pos_y, pos_x)) >= 1 && abs(pl_field.getState(pos_y, pos_x)) <= 10) {
+					pl_field.isColide(abs(pl_field.getState(pos_y, pos_x)) - 1, pl_field.getShip(abs(pl_field.getState(pos_y, pos_x)) - 1).getPos(), true);
+				}
+				pos_x = rand() % 10;
+				pos_y = rand() % 10;
+				e_f.clearRot();
+				e_f.swapSearch(false);
+			}
+			//Попал в клетку
+			else if (ret_res == 1)
+			{
+				if (!e_f.isSearch())
+				{
+					e_f.setHitPos(position(pos_x, pos_y));
+					e_f.swapSearch(true);
+				}
+
+				e_f.add_len();
+
+			}
+			if (e_f.isSearch()) {
+				pos_x = e_f.getHitPos().start_x + (1 - 2 * int(e_f.isVecFounded())) * e_f.getVecPos().start_x;
+				pos_y = e_f.getHitPos().start_y + (1 - 2 * int(e_f.isVecFounded())) * e_f.getVecPos().start_y;
+
+			}
+			//Не попал в клетку
+			if (pos_x < 0 || pos_x >= 10 || \
+				pos_y < 0 || pos_y >= 10)
+				ret_res = -1;
+			else {
+				ret_res = pl_field.setHit(pos_y, pos_x);
+				if (ret_res >= 0) {
+					time_to_step = 0;
+				}
+			}
+
+		}
+		displayAl();
+	}
+}
+
 void startGame() {
 	my = PlayerField();
 	enemy = EnemyField();
