@@ -1,5 +1,6 @@
 #include<iostream>
 #include<vector>
+#include<iomanip>
 #include<string>
 #include<random>
 #include<time.h>
@@ -520,7 +521,20 @@ void shipSettelmentMouseDown(const sf::Event& e, PlayerField& my) {
 		my.getShip(isMoveNum).changeRotation();
 	}
 }
-
+void shipFightMouseDown(const sf::Event& e, EnemyField& enemy) {
+	position h = getCellMouseOnEnemy();
+	if (h.start_x >= 0 && h.start_x < 10 && \
+		h.start_y >= 0 && h.start_y < 10)
+	{
+		int res_hit = enemy.setHit(h.start_y, h.start_x);
+		if (res_hit == 0) {
+			isPlayerStep = false;
+		}
+		else if (res_hit == 2) {
+			enemy.isColide(abs(enemy.getState(h.start_y, h.start_x)) - 1, enemy.getShip(abs(enemy.getState(h.start_y, h.start_x)) - 1).getPos(), true);
+		}
+	}
+}
 void drawShips(PlayerField& field) {
 	for (int i = 0; i < 10; ++i) {
 		window.draw(field.getShip(i).getSprite());
@@ -539,8 +553,6 @@ void shipSettelmentMouseUp(const sf::Event& e, PlayerField& my) {
 			else {
 				my.getShip(isMoveNum).setPosition(getCellMouseOn(), false);
 			}
-
-			std::cout << 1;
 		}
 	}
 }
@@ -702,8 +714,15 @@ void startGame() {
 }
 
 int main() {
+	setlocale(LC_ALL, "rus");
+	re_text.loadFromFile("./Sprites/re.png");
+	re_sprite.setTexture(re_text);
+	re_sprite.setScale(sf::Vector2f(0.2f, 0.2f));
+	re_sprite.setOrigin(sf::Vector2f((re_text.getSize().x) / 2, (re_text.getSize().y) / 2));
+	re_sprite.setPosition(625, 450);
 
 	main_font.loadFromFile("./Fonts/PionerSans-Bold.ttf");
+
 	while (window.isOpen())
 	{
 
@@ -712,31 +731,45 @@ int main() {
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
-			if (isPlayerStep) {
-				if (event.type == sf::Event::MouseButtonPressed)
-				{
-					if (!my.isAllUser()) {
-						shipSettelmentMouseDown(event, my);
+			if (event.type == sf::Event::Closed)
+				window.close();
+			if (!my.isAllDestroyed() && !enemy.isAllDestroyed()) {
+				if (isPlayerStep) {
+					if (event.type == sf::Event::MouseButtonPressed)
+					{
+						if (!my.isAllUser()) {
+							shipSettelmentMouseDown(event, my);
+						}
+						else {
+							shipFightMouseDown(event, enemy);
+						}
 					}
-					else {
+					if (event.type == sf::Event::MouseButtonReleased)
+					{
+						if (!my.isAllUser()) {
+							shipSettelmentMouseUp(event, my);
+						}
 					}
 				}
-				if (event.type == sf::Event::MouseButtonReleased)
-				{
-					if (!my.isAllUser()) {
-						shipSettelmentMouseUp(event, my);
-					}
+				else {
+					enemyAtack(my, enemy);
 				}
 			}
-
+			else {
+				if (event.type == sf::Event::MouseButtonPressed && event.key.code == sf::Mouse::Left && re_sprite.getGlobalBounds().contains(pos.x, pos.y)) {
+					if (my.isAllDestroyed()) {
+						std::cout << "Вы проиграли:(\n";
+					}
+					else if (enemy.isAllDestroyed()) {
+						std::cout << "Вы выиграли\n";
+					}
+					startGame();
+				}
+			}
 		}
-
-
-
 		if (isMove) {
 			my.getShip(isMoveNum).changePos(getCellMouseOn());
 		}
-
 		displayAl();
 	}
 	return 0;

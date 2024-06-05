@@ -1,97 +1,116 @@
 ﻿  Battleship.cpp
-D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(74,274): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(108,26): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(425,83): warning C4244: аргумент: преобразование "unsigned int" в "T", возможна потеря данных
+D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(75,274): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(109,26): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(426,83): warning C4244: аргумент: преобразование "unsigned int" в "T", возможна потеря данных
           with
           [
               T=float
           ]
-D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(425,54): warning C4244: аргумент: преобразование "unsigned int" в "T", возможна потеря данных
+D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(426,54): warning C4244: аргумент: преобразование "unsigned int" в "T", возможна потеря данных
           with
           [
               T=float
           ]
-D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(430,51): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
+D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(431,51): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
           with
           [
               T=float
           ]
-D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(433,41): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
+D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(434,41): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
           with
           [
               T=float
           ]
-D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(437,57): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
+D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(438,57): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
           with
           [
               T=float
           ]
-D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(440,47): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
+D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(441,47): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
           with
           [
               T=float
           ]
-D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(444,46): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
+D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(445,46): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
           with
           [
               T=float
           ]
-D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(446,47): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
+D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(447,47): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
           with
           [
               T=float
           ]
-D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(449,42): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
+D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(450,42): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
           with
           [
               T=float
           ]
-D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(451,42): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
+D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(452,42): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
           with
           [
               T=float
           ]
-D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(455,47): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
+D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(456,47): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
           with
           [
               T=float
           ]
-D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(457,48): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
+D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(458,48): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
           with
           [
               T=float
           ]
-D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(460,42): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
+D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(461,42): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
           with
           [
               T=float
           ]
-D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(462,42): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
+D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(463,42): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
           with
           [
               T=float
           ]
-D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(559,43): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(559,29): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(570,65): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
+D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(571,43): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(571,29): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(582,65): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
           with
           [
               T=float
           ]
-D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(570,46): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
+D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(582,46): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
           with
           [
               T=float
           ]
-D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(589,42): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(589,29): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(599,64): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
+D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(601,42): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(601,29): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(611,64): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
           with
           [
               T=float
           ]
-D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(599,45): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
+D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(611,45): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
           with
+          [
+              T=float
+          ]
+D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(643,14): warning C4244: инициализация: преобразование "sf::Int64" в "float", возможна потеря данных
+D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(721,84): warning C4244: аргумент: преобразование "T" в "T", возможна потеря данных
+          with
+          [
+              T=unsigned int
+          ]
+          and
+          [
+              T=float
+          ]
+D:\1 курс\ОП 2 сем\Battleship3\Battleship3\Battleship.cpp(721,57): warning C4244: аргумент: преобразование "T" в "T", возможна потеря данных
+          with
+          [
+              T=unsigned int
+          ]
+          and
           [
               T=float
           ]
